@@ -1,4 +1,11 @@
 """ 52093080 """
+# 0. evaluate if expresisons is valid
+# 1. convert string into tree
+# 2. print tree to consol
+# 3. for calculation:
+#       cast nodes as Expr and use the overloaded operators
+# 4. save tree in json file
+# 5. to reload import tree from json file (can be calculated and printed)
 
 import re
 import json
@@ -82,3 +89,5 @@ class Div(Operator):
         self.ex2:Expr = expr2
         self.result = None
 
+if __name__ == '__main__':
+    pass
