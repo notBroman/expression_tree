@@ -1,4 +1,3 @@
-""" 52093080 """
 # 0. evaluate if expresisons is valid
 # 1. convert string into tree
 # 2. print tree to consol
@@ -7,26 +6,22 @@
 # 4. save tree in json file
 # 5. to reload import tree from json file (can be calculated and printed)
 
-import re
-import json
-import importlib
-
-class Expr():
+class Expr(object):
     """ general class intreface for all expressions """
     def __init__(self, value):
         self.val = value
 
     """ overload operators for Expressions"""
-    def __add__(self, other:Expr):
+    def __add__(self, other):
         return self.val + other.val
 
-    def __sub__(self, other:Expr):
+    def __sub__(self, other):
         return self.val - other.val
 
-    def __mul__(self, other:Expr):
+    def __mul__(self, other):
         return self.val * other.val
 
-    def __truediv__(self, other:Expr):
+    def __truediv__(self, other):
         return self.val / other.val
 
 
