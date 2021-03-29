@@ -5,8 +5,23 @@ import json
 import importlib
 
 class Expr():
-    """ look into oparator overloading """
-    pass
+    """ general class intreface for all expressions """
+    def __init__(self, value):
+        self.val = value
+
+    """ overload operators for Expressions"""
+    def __add__(self, other:Expr):
+        return self.val + other.val
+
+    def __sub__(self, other:Expr):
+        return self.val - other.val
+
+    def __mul__(self, other:Expr):
+        return self.val * other.val
+
+    def __truediv__(self, other:Expr):
+        return self.val / other.val
+
 
 class Operator(Expr):
     """ parent of every operator (+,-,*,/) """
