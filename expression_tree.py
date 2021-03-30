@@ -1,7 +1,6 @@
 """ 52093080 """
 import re
 import json
-import expression
 from ADT import tree_base
 from ADT import stack
 
@@ -18,6 +17,7 @@ def match_bracket(st1:stack, string:str):
             try:
                 st1.pop()
             except IndexError:
+                # an index error is raised if we try to pop from an empty stack
                 return False
     if len(st1) == 0:
         # return True if all opend brackets were closed
@@ -54,5 +54,6 @@ def menu():
 
 if __name__ == '__main__':
     a = '(((5 + 2) * (2 - 1))/((2 + 9) + ((7 - 2) - 1)) * 8)'
+    print(eval(a))
 
     menu()
