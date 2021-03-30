@@ -1,7 +1,6 @@
 """ 52093080 """
 import re
 import json
-from ADT import tree_base
 from ADT import stack
 
 """ error classes """
@@ -25,6 +24,18 @@ class OperatorsError(Exception):
     # operator is places incorrectly
     pass
 
+""" Tree node base """
+# inspired by @julkar9 post "Program to convert Infix notation to Expression Tree"
+# on geeksforgeeks.org
+# https://www.geeksforgeeks.org/program-to-convert-infix-notation-to-expression-tree/
+# adapted to work with our string format in pyhton
+def _TreeNode():
+    def __init__(self, data:str):
+        self.data = data
+        self.left = None
+        self.right = None
+
+""" validation functions """
 def miss_op(string:str):
     """ a function that matched patterns in the string, that make an expression invalid"""
     # stripping all whitespaces
@@ -115,7 +126,7 @@ def validate(string:str):
     else:
         return True
 
-
+""" menu for user interaction """
 def menu():
     """ menu for choosing what to do """
     while True:
