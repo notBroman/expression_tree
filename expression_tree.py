@@ -18,16 +18,22 @@ def miss_op(string:str):
     p2 = re.compile("\)[0-9]\)")
     p3 = re.compile("\([0-9][\+\-\*\/]\)")
     p4 = re.compile("\([\+\-\*\/][0-9]\)")
+    p5 = re.compile("\([\+\-\*\/][0-9]\(")
+    p6 = re.compile("\)[0-9][\+\-\*\/]\)")
 
     f1 = re.search(p1, string)
     f2 = re.search(p2, string)
     f3 = re.search(p3, string)
     f4 = re.search(p4, string)
+    f5 = re.search(p5, string)
+    f6 = re.search(p6, string)
 
     if f1 is not None or f2 is not None:
         raise OperatorsError("invalid expression: missing operator")
     elif f3 is not None or f4 is not None:
         raise OperandsError("invalid expression: missing operant")
+    elif f5 is not None or f6 is not None:
+        raise OperatorsError("invalid expression: elements in wrong order")
     else:
         pass
 
