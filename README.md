@@ -26,4 +26,4 @@
     use stack to match brackets
     has to say what is wrong with expression if it is wrong~~
     
-~~- calulate the answer from the expression ~~
+~~- calulate the answer from the expression~~
