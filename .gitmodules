@@ -1,0 +1,3 @@
+[submodule "ADT"]
+	path = ADT
+	url = git@github.com:notBroman/ADT.git
