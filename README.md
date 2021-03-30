@@ -15,12 +15,15 @@
 ## Roadmap
 
 - convert an expresison into a tree
-    maybe with regex
-    
+    maybe with a stack
+- saving and loading a tree to/from json
+- write unittest for tree conversion
+
+## Finsihed
+
 ~~- validate expression (look into pythons eval function)
     use regex to convet input string into only brackets
     use stack to match brackets
-    has to say what is wrong with expression if it is wrong ~~
+    has to say what is wrong with expression if it is wrong~~
     
-- saving and loading a tree to/from json
-- write unittest for tree conversion
+~~- calulate the answer from the expression ~~
