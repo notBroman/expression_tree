@@ -24,7 +24,7 @@ class OperatorsError(Exception):
     # operator is places incorrectly
     pass
 
-""" Tree node base """
+""" Tree node base and utils"""
 # inspired by @julkar9 post "Program to convert Infix notation to Expression Tree"
 # on geeksforgeeks.org
 # https://www.geeksforgeeks.org/program-to-convert-infix-notation-to-expression-tree/
