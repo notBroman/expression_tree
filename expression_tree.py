@@ -4,6 +4,20 @@ import json
 from ADT import tree_base
 from ADT import stack
 
+def num_brackets(string:str):
+    """ there need to be twice as many brackets as operators """
+    """ otherwise there is more than 1 operator in bracket pair """
+    """ check after the closing of brackets is checked"""
+    brackets = [str(e) for e in string if e == "(" or e == ")"]
+    operators = [str(e) for e in string if e == "+" or e == "-" or e == "*" or e == "/"]
+
+    if len(brackets) == 2*len(operators):
+        # return True if there are enough brackets
+        return True
+    else:
+        # return False if there is too little brackets
+        return False
+
 
 def match_bracket(st1:stack, string:str):
     """ use a stack to see if brackets are closed"""
