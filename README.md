@@ -16,9 +16,9 @@
 
 - convert an expresison into a tree
     maybe with regex
-~~- validate expression (look into pythons eval function)
-    use regex to convet input string into only brackets
-    use stack to match brackets
-    has to say what is wrong with expression if it is wrong~~
+- ~~validate expression (look into pythons eval function)
+    ~~use regex to convet input string into only brackets
+    ~~use stack to match brackets
+    ~~has to say what is wrong with expression if it is wrong
 - saving and loading a tree to/from json
 - write unittest for tree conversion
