@@ -6,7 +6,7 @@ from ADT import tree_base
 from ADT import stack
 
 
-def match_bracket(stack:stack, string:str):
+def match_bracket(st1:stack, string:str):
     """ use a stack to see if brackets are closed"""
     # use a comprehension to filter out brackets
     brackets = [str(e) for e in string if e == "(" or e == ")"]
@@ -15,17 +15,44 @@ def match_bracket(stack:stack, string:str):
         if element == '(':
             st1.push(element)
         elif element == ')' and st1.get_top != None:
-            st1.pop()
+            try:
+                st1.pop()
+            except IndexError:
+                return False
     if len(st1) == 0:
-        # return 1 if all opend brackets were closed
-        return 1
+        # return True if all opend brackets were closed
+        return True
     else:
-        # return 0 if brackets are missmatched
-        return 0
+        # return False if brackets are missmatched
+        return False
+
+def validate(string:str):
+    s1 = stack.Stack()
+    brac_val = match_bracket(s1, string)
+    if brac_val == False:
+        print("invalid expression: brackets do not match\n")
+    else:
+        # check if expression follows X?Y recursively or not
+        # TODO
+        print("brackets match \n")
+
+
+def menu():
+    while True:
+        try:
+            option = int(input("choose one of the following options: \n\t 1: Input an expression \n\t 2: quit \n"))
+        except ValueError:
+            print("please enter a valid option")
+        else:
+            if option == 1:
+                usr_in = input("Please enter an algebraic expression: ")
+                validate(usr_in)
+
+            elif option == 2:
+                break
 
 
 if __name__ == '__main__':
-    a = '(((5 + 2) * (2 - 1))/((2 + 9) + ((7-2)-1)) * 8)'
-    st1 = stack.Stack()
+    a = '(((5 + 2) * (2 - 1))/((2 + 9) + ((7 - 2) - 1)) * 8)'
 
-    print(match_bracket(st1, a))
+    menu()
