@@ -30,21 +30,30 @@ class OperatorsError(Exception):
 # https://www.geeksforgeeks.org/program-to-convert-infix-notation-to-expression-tree/
 # adapted to work with our string format in pyhton
 class _TreeNode():
-    __slots__ = "data", "left", "right"
 
     def __init__(self, data):
         self.data = data
         self.left = None
         self.right = None
 
+    def __str__(self):
+        try:
+            print(self.left)
+            print(self.data)
+            print(self.right)
+        except Exception as e:
+            print(e)
+
+        return ""
+
 class _ExpressionTree():
-    def __init__(self):
-        self.root = None
+    def __init__(self, root:_TreeNode):
+        self.root = root
 
     def __str__(self):
         return inorder_trav(self.root, "")
 
-    def build_tree(self, string:str) -> _TreeNode:
+def build_tree(string:str) -> _TreeNode:
         """ traverses the string an builds the expression tree while doing so """
         # traverses the string from left to right
         # all operators prioritze the left operand, so this should work fine
@@ -69,25 +78,27 @@ class _ExpressionTree():
 
         for ch in string:
             if ch.isalnum():
-                node = _TreeNode(ch)
-                node_stack.push(node)
+                node_stack.push(ch)
 
             elif re.match(p1, ch) is not None:
                 op_stack.push(ch)
 
             elif ch == ")":
                 parent = _TreeNode(op_stack.pop())
-                right_child = _TreeNode(node_stack.pop())
-                left_child = _TreeNode(node_stack.pop())
-                parent.left = left_child
-                parent.right = right_child
+                parent.right = node_stack.pop()
+                parent.left = node_stack.pop()
                 node_stack.push(parent)
+
                 op_stack.pop()
+
+                # print("new")
+                # print(op_stack)
+                # print(node_stack)
+
             else:
                 raise Exception("Error: unxpected character in expression")
 
-        self.root = node_stack.pop()
-        return self.root
+        return node_stack.pop()
 
 def inorder_trav(start:_TreeNode, travd:str):
         """ traverses left->root->right """
@@ -216,16 +227,12 @@ if __name__ == '__main__':
     a = '(((5 + 2) * (2 - 1))/((2 + 9) + ((7 - 2) - 1)) * 8)'
     b = '(((2*(3+2))+5)/2)'
     c = '(((2*(3+2))+5)/2)'
-    print(validate(a))
-    print(eval(a))
-    print(validate(b))
-    print(eval(b))
-    print(validate(c))
 
     print("----------------Tree test-----------------")
-    t1 = _ExpressionTree()
-    t1.build_tree(c)
-    print(t1)
+    root = build_tree(c)
+    print(root)
+
+    # print(t1)
 
 
     # menu()
