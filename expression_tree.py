@@ -29,14 +29,78 @@ class OperatorsError(Exception):
 # on geeksforgeeks.org
 # https://www.geeksforgeeks.org/program-to-convert-infix-notation-to-expression-tree/
 # adapted to work with our string format in pyhton
-def _TreeNode():
-    def __init__(self, data:str):
+class _TreeNode():
+    __slots__ = "data", "left", "right"
+
+    def __init__(self, data):
         self.data = data
         self.left = None
         self.right = None
 
+class _ExpressionTree():
+    def __init__(self):
+        self.root = None
+
+    def __str__(self):
+        return inorder_trav(self.root, "")
+
+    def build_tree(self, string:str) -> _TreeNode:
+        """ traverses the string an builds the expression tree while doing so """
+        # traverses the string from left to right
+        # all operators prioritze the left operand, so this should work fine
+        # have an operator stack and an operand stack
+        # operators are pushed on the operator stack as strings
+        # operands are pushed on operand stack as tree nodes
+
+        # when a closed bracket would be pushed:
+        #   take the last two items on the operand stack
+        #   make a new node with them the operator as parent node and the operatnds as children nodes
+        #   pop the operator and the the opened bracket below it
+        #   push the newly created node on the operand stack
+
+        for ch in string:
+            if ch == " ":
+                ch.replace(" ","")
+
+        op_stack = stack.Stack()
+        node_stack = stack.Stack()
+
+        p1 = re.compile("[\(\+\-\*\/]")
+
+        for ch in string:
+            if ch.isalnum():
+                node = _TreeNode(ch)
+                node_stack.push(node)
+
+            elif re.match(p1, ch) is not None:
+                op_stack.push(ch)
+
+            elif ch == ")":
+                parent = _TreeNode(op_stack.pop())
+                right_child = _TreeNode(node_stack.pop())
+                left_child = _TreeNode(node_stack.pop())
+                parent.left = left_child
+                parent.right = right_child
+                node_stack.push(parent)
+                op_stack.pop()
+            else:
+                raise Exception("Error: unxpected character in expression")
+
+        self.root = node_stack.pop()
+        return self.root
+
+def inorder_trav(start:_TreeNode, travd:str):
+        """ traverses left->root->right """
+        if start:
+            inorder_trav(start.left, travd)
+            travd += str(start.data) + '->'
+            inorder_trav(start.right, travd)
+        else:
+            return travd
+
+
 """ validation functions """
-def miss_op(string:str):
+def miss_op(string:str) -> Exception:
     """ a function that matched patterns in the string, that make an expression invalid"""
     # stripping all whitespaces
     # so i dont have to deal with them when matching patterns
@@ -78,7 +142,7 @@ def miss_op(string:str):
     else:
         pass
 
-def num_brackets(string:str):
+def num_brackets(string:str) -> Exception:
     """ there need to be twice as many brackets as operators """
     """ otherwise there is more than 1 operator in bracket pair """
     """ check after the closing of brackets is checked"""
@@ -91,7 +155,7 @@ def num_brackets(string:str):
         raise OperandsError("invalid expression: wrong number of brackets/operators")
 
 
-def match_bracket(st1:stack, string:str):
+def match_bracket(st1:stack, string:str) -> Exception:
     """ use a stack to see if brackets are closed"""
     # use a comprehension to filter out brackets
     brackets = [str(e) for e in string if e == "(" or e == ")"]
@@ -109,7 +173,7 @@ def match_bracket(st1:stack, string:str):
         # return True if all opend brackets were closed
         raise BracketsError("invalid expression: mismatched brackets")
 
-def validate(string:str):
+def validate(string:str)->bool:
     """ function that calls all valiadation functions back to back"""
     # NOTE: this does not say there are multiple
     # errors in the expression if there are
@@ -151,11 +215,17 @@ if __name__ == '__main__':
     # packages would not need to be installed by the end user
     a = '(((5 + 2) * (2 - 1))/((2 + 9) + ((7 - 2) - 1)) * 8)'
     b = '(((2*(3+2))+5)/2)'
-    c = '(*2(1+2))'
+    c = '(((2*(3+2))+5)/2)'
     print(validate(a))
     print(eval(a))
     print(validate(b))
     print(eval(b))
     print(validate(c))
 
-    menu()
+    print("----------------Tree test-----------------")
+    t1 = _ExpressionTree()
+    t1.build_tree(c)
+    print(t1)
+
+
+    # menu()
