@@ -44,7 +44,7 @@ class _TreeNode():
         except Exception as e:
             print(e)
 
-        return ""
+        return "\0"
 
 class _ExpressionTree():
     def __init__(self, root:_TreeNode):
@@ -214,7 +214,20 @@ def menu():
                 usr_in = input("Please enter an algebraic expression: ")
                 valid = validate(usr_in)
                 if valid == True:
+                    print("expression is valid")
                     print(f"{usr_in} = {eval(usr_in)}\n")
+                    r1 = build_tree(usr_in)
+                    print(r1)
+
+                    input_string = input("Do You want to save this tree? (Y/n)")
+                    input_string = input_string.replace(" ","")
+                    input_string = input_string[:1]
+
+                    if input_string == "Y" or input_string == "y":
+                        # save()
+                        print("tree was saved to file")
+                    else:
+                        print("The tree will not be saved")
 
             elif option == 2:
                 break
@@ -233,6 +246,5 @@ if __name__ == '__main__':
     print(root)
 
     # print(t1)
-
 
     # menu()
