@@ -113,6 +113,22 @@ def build_tree(string:str) -> _TreeNode:
 
         return node_stack.pop()
 
+def format_tree(string:str) -> str:
+    s1 = stack.Stack()
+    ops = ["+","-","*","/"]
+    out = ""
+    for char in string:
+        if char == "(":
+            s1.push(char)
+        elif char == ")":
+            s1.pop()
+        elif char.isnumeric():
+            out += "\t"*len(s1) + char + "\n"
+        elif char in ops:
+            out += "\t"*(len(s1)-1) + char + "\n"
+    return out
+
+
 
 """ validation functions """
 def contained_charcters(string:str) -> Exception:
@@ -223,18 +239,23 @@ def save(string:str, name="save.txt"):
 def load(name:str="save.txt"):
     with open(name, mode="r", encoding="utf-8") as file:
         lst = (file.readlines())
-        print(lst)
+        lst = [e.replace("\n","") for e in lst]
+        return lst
 
 """ menu for user interaction """
 def menu():
     """ menu for choosing what to do """
     while True:
         try:
-            option = int(input("choose one of the following options: \n\t 1: Input an expression \n\t 2: quit \n"))
+            option = int(input("choose one of the following options: \n\t 0: quit \n\t 1: Input an expression \n\t 2: load from a file \n\t"))
         except ValueError:
             print("please enter a valid option\n")
         else:
-            if option == 1:
+
+            if option == 0:
+                break
+
+            elif option == 1:
                 usr_in = input("Please enter an algebraic expression: ")
                 usr_in = usr_in.replace(" ","")
                 print(usr_in)
@@ -244,7 +265,7 @@ def menu():
                     print(f"{usr_in} = {eval(usr_in)}\n")
                     r1 = build_tree(usr_in)
                     t1 = _ExpressionTree(r1)
-                    print(t1)
+                    print(format_tree(usr_in))
 
                     input_string = input("Do You want to save this tree? (Y/n)")
                     input_string = input_string.replace(" ","")
@@ -255,14 +276,20 @@ def menu():
                         save(usr_in)
                         print("tree was saved to file")
                     else:
-                        print("The tree will not be saved")
+                        print("The tree was not be saved")
+
 
             elif option == 2:
-                break
-
-            elif option == 3:
-                load()
-
+                entries = load()
+                print(entries)
+                input_string = input("Do You want to print a saved tree? (Y/n)")
+                input_string = input_string.replace(" ", "")[:1]
+            if input_string == "Y" or input_string == "y":
+                for e in entries:
+                    print(e + "\n")
+                    print(format_tree(e) + "\n")
+            else:
+                print("no trees were printed")
 
 if __name__ == '__main__':
     # calling menu to run the program, ideally this would be compiled into a .exe or .deb
@@ -278,5 +305,6 @@ if __name__ == '__main__':
     # print(root)
     # print("\n")
     # print(t1)
+    # print(format_tree(c))
 
     menu()
