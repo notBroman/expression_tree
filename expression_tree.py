@@ -1,6 +1,6 @@
 """ 52093080 """
 import re
-import json
+import pickle
 from ADT import stack
 
 """ error classes """
@@ -37,21 +37,32 @@ class _TreeNode():
         self.right = None
 
     def __str__(self):
-        try:
-            print(self.left)
-            print(self.data)
-            print(self.right)
-        except Exception as e:
-            print(e)
-
-        return "\0"
+        if self.data == None:
+            return "\0"
+        else:
+            return self.data
 
 class _ExpressionTree():
     def __init__(self, root:_TreeNode):
         self.root = root
 
-    def __str__(self):
-        return inorder_trav(self.root, "")
+    def __str__(self) -> str:
+        return str(inorder_trav(self.root, []))
+
+    def print(self):
+        lst = inorder_trav(self.root, [])
+        print(lst)
+        return lst
+
+def inorder_trav(start:_TreeNode, travd:list) -> list:
+    """ traverses left->root->right """
+    if start:
+        inorder_trav(start.left, travd)
+        travd.append(start.data)
+        inorder_trav(start.right, travd)
+
+        return travd
+
 
 def build_tree(string:str) -> _TreeNode:
         """ traverses the string an builds the expression tree while doing so """
@@ -78,13 +89,15 @@ def build_tree(string:str) -> _TreeNode:
 
         for ch in string:
             if ch.isalnum():
-                node_stack.push(ch)
+                new = _TreeNode(ch)
+                node_stack.push(new)
 
             elif re.match(p1, ch) is not None:
                 op_stack.push(ch)
 
             elif ch == ")":
                 parent = _TreeNode(op_stack.pop())
+
                 parent.right = node_stack.pop()
                 parent.left = node_stack.pop()
                 node_stack.push(parent)
@@ -100,24 +113,22 @@ def build_tree(string:str) -> _TreeNode:
 
         return node_stack.pop()
 
-def inorder_trav(start:_TreeNode, travd:str):
-        """ traverses left->root->right """
-        if start:
-            inorder_trav(start.left, travd)
-            travd += str(start.data) + '->'
-            inorder_trav(start.right, travd)
-        else:
-            return travd
-
 
 """ validation functions """
+def contained_charcters(string:str) -> Exception:
+    p1 = re.compile("[^0-9\+\-\*\/\(\)]+")
+    f1 = re.search(p1, string)
+
+    if f1 != None:
+        raise SyntaxError(f"Invalid character/s: {f1.group()}")
+    else:
+        pass
+
 def miss_op(string:str) -> Exception:
     """ a function that matched patterns in the string, that make an expression invalid"""
     # stripping all whitespaces
     # so i dont have to deal with them when matching patterns
-    for i in string:
-        if i == " ":
-            string.replace(" ","")
+    string.replace(" ","")
 
     # matching patterns using regex
     # it seems to be the easiest way to catch certain kinds of invalid expressions
@@ -147,7 +158,7 @@ def miss_op(string:str) -> Exception:
     if f1 is not None or f2 is not None:
         raise OperatorsError("invalid expression: missing operator")
     elif f3 is not None or f4 is not None:
-        raise OperandsError("invalid expression: missing operant")
+        raise OperandsError("invalid expression: missing operand")
     elif f5 is not None or f6 is not None:
         raise OperatorsError("invalid expression: elements in wrong order")
     else:
@@ -194,12 +205,25 @@ def validate(string:str)->bool:
     try:
         match_bracket(s1, string)
         num_brackets(string)
+        contained_charcters(string)
         miss_op(string)
+        if len(string) < 2:
+            raise SyntaxError("SyntaxError: expression too short")
     except Exception as e:
         print(e)
         return False
     else:
         return True
+
+""" saving and loading from a .json file """
+def save(string:str, name="save.txt"):
+    with open(name, mode="a", encoding="utf-8") as file:
+        file.write(string + "\n")
+
+def load(name:str="save.txt"):
+    with open(name, mode="r", encoding="utf-8") as file:
+        lst = (file.readlines())
+        print(lst)
 
 """ menu for user interaction """
 def menu():
@@ -212,25 +236,32 @@ def menu():
         else:
             if option == 1:
                 usr_in = input("Please enter an algebraic expression: ")
+                usr_in = usr_in.replace(" ","")
+                print(usr_in)
                 valid = validate(usr_in)
                 if valid == True:
                     print("expression is valid")
                     print(f"{usr_in} = {eval(usr_in)}\n")
                     r1 = build_tree(usr_in)
-                    print(r1)
+                    t1 = _ExpressionTree(r1)
+                    print(t1)
 
                     input_string = input("Do You want to save this tree? (Y/n)")
                     input_string = input_string.replace(" ","")
                     input_string = input_string[:1]
 
                     if input_string == "Y" or input_string == "y":
-                        # save()
+                        # the valid usr input is a serializantion of the binary tree, it will be saved
+                        save(usr_in)
                         print("tree was saved to file")
                     else:
                         print("The tree will not be saved")
 
             elif option == 2:
                 break
+
+            elif option == 3:
+                load()
 
 
 if __name__ == '__main__':
@@ -241,10 +272,11 @@ if __name__ == '__main__':
     b = '(((2*(3+2))+5)/2)'
     c = '(((2*(3+2))+5)/2)'
 
-    print("----------------Tree test-----------------")
-    root = build_tree(c)
-    print(root)
-
+    # print("----------------Tree test-----------------")
+    # t1 = _ExpressionTree(build_tree(c))
+    # root = build_tree(c)
+    # print(root)
+    # print("\n")
     # print(t1)
 
-    # menu()
+    menu()
