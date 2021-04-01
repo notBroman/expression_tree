@@ -14,9 +14,8 @@
 
 ## Roadmap
 
-- convert an expresison into a tree
-    maybe with a stack
-- saving and loading a tree to/from json
+
+
 - write unittest for tree conversion
 
 ## Finsihed
@@ -25,5 +24,10 @@
     use regex to convet input string into only brackets
     use stack to match brackets
     has to say what is wrong with expression if it is wrong~~
-    
+
 ~~- calulate the answer from the expression~~
+
+~~- convert an expresison into a tree
+    maybe with a stack~~
+
+~~- saving and loading a tree to/from .txt~~
