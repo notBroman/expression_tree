@@ -20,7 +20,7 @@ import unittest
 # 2. make sure that there is only one of the two options above running
 #
 # License:
-# You can use this code and program under the GNU2.0 license
+# You can use this code and program under the GNU General Public License v3.0
 # however I cannot guarantee that any of this code works outside of this project
 # port at your own risk, I will not take responsibility for any damges caused by this code, when
 # copied into another codebase
