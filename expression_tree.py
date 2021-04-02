@@ -2,6 +2,60 @@
 import re
 import unittest
 
+#############################################################################################################
+########################################### README.md #######################################################
+#############################################################################################################
+#
+# Installation:
+# 1. change expression_tree.txt to expression_tree.py
+# 2. open in your favourite IDE/text editor
+# 3. run with the run botton or in commandline with
+#   '''
+#   python3 expression_tree.py
+#   '''
+# 4. there a menu pops up in the commandline, instructions should be depicted
+#
+# Changing to unittest:
+# 1. in the last 10 lines of the program, comment out menu and decomment unittest.main
+# 2. make sure that there is only one of the two options above running
+#
+# License:
+# You can use this code and program under the GNU2.0 license
+# however I cannot guarantee that any of this code works outside of this project
+# port at your own risk, I will not take responsibility for any damges caused by this code, when
+# copied into another codebase
+#
+# CHANGLE.LOG:
+# 0.1:      basic expression validation and calculation of result
+# 0.2:      basic menu
+# 0.3:      inorder traversal
+# 0.3.1:    conversion from expression into expression tree
+# 0.4:      integration of tree conversion of parsed expression into menu
+# 0.4.1:    inorder traversal
+# 0.5:      extension of expression validation with regex
+# 0.6:      saving and loading
+# 0.6.1:    inegtration of saving an loading into menu
+# 0.7:      formatting of tree for printing
+# 0.7.1:    implementation into menu
+# 0.8:      test cases
+# 0.8.1:    more exception handling
+# 0.9:      porting into a single file
+# 0.9.1:    removing dead && redundant code
+#
+# Misc:
+# If there are any potential bugs or you notice bad practices please add them with the line number
+# and in which function/class/subclass they are in the potential bugs section below.
+# sadly opening an issue not going to be possible here
+#
+# If an algorithm was taken from somewhere, the source is referanced before the function
+# thank you to black tea for the caffeine that kept me going,
+# shoutouts lofi hiphop beats to relax and study to, as well as mac miller
+#
+# POTENTIAL BUGS:
+#
+#############################################################################################################
+#############################################################################################################
+#############################################################################################################
 """ error classes """
 # this lets me catch the exception, when looking for invalid expressions
 # makes the validate function much more readable
@@ -77,7 +131,7 @@ class test_valid(unittest.TestCase):
         self.assertFalse(validate("(+2(1+1))"))
 
 """ stack implmentation with sinlgy linked list"""
-
+# based off of goodrich book and lecture notes
 class _Node():
     __slots__ = '_element', 'next', 'prev'
 
@@ -86,7 +140,7 @@ class _Node():
         self.next = next_node
         self.prev = prev_node
 
-    def __str__(self):
+    def __str__(self) -> str:
         try:
             return str(self._element)
         except Exception as e:
@@ -100,17 +154,11 @@ class Singly_Linked_List():
         if values is not None:
             self.add_multiple(values)
 
-    def __iter__(self):
-        current = self._head
-        while current:
-            yield current
-            current = current.next
-
     def __str__(self):
         values = [str(x) for x in self]
         return ' -> '.join(values)
 
-    def __len__(self):
+    def __len__(self) -> int:
         length = 0
         for element in self.__iter__():
             length += 1
@@ -133,6 +181,7 @@ class Singly_Linked_List():
             self._head = self._head.next
 
 """ Stack """
+""" my own implementation of a basic stack """
 class Stack():
     def __init__(self):
         self._data = Singly_Linked_List()
@@ -140,13 +189,13 @@ class Stack():
         self._top = self._data._head
         self._size = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self._data.__str__()
 
-    def __len__(self):
+    def __len__(self) -> int:
         return self._size
 
-    def pop(self):
+    def pop(self) -> str:
         if self._size == 0:
             raise IndexError("Error: the stack is empty")
         else:
@@ -160,7 +209,7 @@ class Stack():
        self._data.add_first(element)
        self._size += 1
 
-    def get_top(self):
+    def get_top(self) -> str:
         return self._data._head._element
 
 
@@ -176,7 +225,7 @@ class _TreeNode():
         self.left = None
         self.right = None
 
-    def __str__(self):
+    def __str__(self) -> str:
         if self.data == None:
             return "\0"
         else:
@@ -247,6 +296,8 @@ class _ExpressionTree():
 
     def format_tree(self) -> str:
         """ get tree in decent format for printing to user """
+        # my own idea after realizing that the indentation is dependant on depth of node
+
         # the depth can be depermined by counting the brackets
         # ( -> depth++
         # ) -> depth--
@@ -273,6 +324,7 @@ class _ExpressionTree():
 
 
 """ validation functions """
+# own work no inspration other than lofi hiphop to relax and study too
 def contained_charcters(string:str) -> Exception:
     p1 = re.compile("[^0-9\+\-\*\/\(\)]+")
     f1 = re.search(p1, string)
@@ -353,7 +405,7 @@ def match_bracket(st1:Stack, string:str) -> Exception:
         # return True if all opend brackets were closed
         raise BracketsError("invalid expression: mismatched brackets")
 
-def validate(string:str)->bool:
+def validate(string:str) -> bool:
     """ function that calls all valiadation functions back to back"""
     # NOTE: this does not say there are multiple
     # errors in the expression if there are
@@ -445,9 +497,6 @@ if __name__ == '__main__':
     # to not have to run the source code manually, this would make it more portable
     # packages would not need to be installed by the end user
 
-    # uncomment line 465 to run tests
-    #
-    # uncomment line 463 to run program normally
 
     # unittest.main()
     menu()
