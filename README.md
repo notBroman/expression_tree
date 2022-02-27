@@ -1,5 +1,12 @@
 
-# README for assessment 3
+# expression tree
+
+## outline
+
+This program converts valid arithmetic expressions into an expression tree, calculates the result and can saves it to/from a .txt file.
+The project implements baisc data structures and utilises regular expressions.
+Python is the programming language used.
+
 
 ## How program works
 
@@ -12,11 +19,6 @@
 5. to reload import tree from json file (can be calculated and printed)
 6. unittest of program
 
-## Roadmap
-
-
-
-- write unittest for tree conversion
 
 ## Finsihed
 
@@ -31,3 +33,5 @@
     maybe with a stack~~
 
 ~~- saving and loading a tree to/from .txt~~
+
+~~- unittest for tree conversion~~
