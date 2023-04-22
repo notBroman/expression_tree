@@ -1,3 +1,7 @@
 *.pyc
-*.txt
 *.cpython-38.pyc
+
+cpp/*.out
+cpp/*.cmake
+cpp/CMakeFiles/*
+cpp/CMakeC*
