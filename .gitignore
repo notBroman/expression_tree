@@ -5,3 +5,4 @@ cpp/*.out
 cpp/*.cmake
 cpp/CMakeFiles/*
 cpp/CMakeC*
+cpp/Makefile
